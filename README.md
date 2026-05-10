@@ -1,67 +1,43 @@
 # ansible-nextcloud-server
 
-ansible-nextcloud-server-role
+An Ansible role to deploy **Nextcloud** behind an **Nginx** reverse proxy on CentOS/RHEL systems.
 
+## Features
+* Automated Nextcloud installation and configuration.
+* PHP-FPM optimization for Nextcloud.
+* Nginx configuration with SSL support.
 
-This role help you install nextcloud with nginx and all other needed packages with configuration.
+## Prerequisites
+* **Operating System:** CentOS/RHEL 7 or 8.
+* **Database:** A pre-configured MySQL/MariaDB instance is required.
+* **Ansible:** 2.9 or higher.
 
-In defaults/main.yml you can change variable nextcloud_version:  for install other versions you want.
+## Role Variables
+You can find these in `defaults/main.yml`:
+* `nextcloud_version`: The version of Nextcloud to install (Default: `latest`).
+* `ssl_cert_path`: Destination path for SSL certificates.
 
-This role configure php and php-fpm for nextcloud. If you want make changes in php or php-fpm you can add that in yaml in directory tasks 
+## SSL Configuration
+To enable SSL, place your certificate and key in the `files/` directory.
+Update the certificate filenames in the playbook variables or `defaults/main.yml` to match your domain (e.g., `yourdomain.com.crt`).
 
-Before installation or run this role you need install and configure your DB(database) for enterprise. I have using in my server mysql how recommended in documentation.
+## Usage Example
 
-
-After install DB you need create for role install file like this:
-
-example: install-nextcloud.yml
-
+### 1. Inventory (`inventory.yml`)
+```yaml
+[centos]
+nextcloud_server ansible_host=192.168.88.235 ansible_user=deploy
 
 ```
----
+
+## 2. Instalation (`install-nextcloud.yml`)
+```yaml
+
   - hosts: centos
     gather_facts: yes
-		become: yes
+	become: yes
 
     roles:
       - nextcloud
-...
-```
-
-and have inventory file where you write information about your host or server where you want make install:
-
-example:  inventory.yml
-```
-[localserver]
-localhost
-
-[centos]
-nextcloud  ansible_host=192.168.88.235 ansible_port=22 ansible_user=deploy
-```
-For working ssl for your site you need change ssl certificates in files directory and add name files in file nginx-install-config.yml in section
-
-```
-- name: Copy crt file for ngin
-  ansible.builtin.copy:
-    src: files/danielyan.com.crt
-    dest: /etc/nginx/ssl
-    owner: root
-    group: root
-    mode: '0644'
-
-- name: Copy key files for nginx
-  ansible.builtin.copy:
-    src: files/danielyan.com.key
-    dest: /etc/nginx/ssl
-    owner: root
-    group: root
-    mode: '0644'
-
-```
-and in directory templates change in file nginx.conf.j2 path to your ssl
-
-```
-    ssl_certificate     /etc/nginx/ssl/danielyan.com.crt;
-    ssl_certificate_key /etc/nginx/ssl/danielyan.com.key;
 
 ```
