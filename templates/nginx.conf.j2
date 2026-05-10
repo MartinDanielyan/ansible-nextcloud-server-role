@@ -18,8 +18,8 @@ server {
 
     # Use Mozilla's guidelines for SSL/TLS settings
     # https://mozilla.github.io/server-side-tls/ssl-config-generator/
-    ssl_certificate     /etc/nginx/ssl/danielyan.com.crt;
-    ssl_certificate_key /etc/nginx/ssl/danielyan.com.key;
+    ssl_certificate     /etc/nginx/ssl/{{ ssl_certificate_file }};
+    ssl_certificate_key /etc/nginx/ssl/{{ ssl_certificate_key_file }};
 
     access_log  /var/log/nginx/nextcloud-access.log;
     error_log  /var/log/nginx/nextcloud-error.log;
