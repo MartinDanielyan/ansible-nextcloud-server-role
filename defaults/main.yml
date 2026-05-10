@@ -33,4 +33,7 @@ php_install:
 #nextcloud_version: 21.0.2
 nextcloud_version: 22.1.0
 
+ssl_certificate_file: "danielyan.com.crt"
+ssl_certificate_key_file: "danielyan.com.key"
+
 ...
